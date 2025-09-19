@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visionary Web Development Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@800&family=Pacifico&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base styling */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(120deg, #fafdff 0%, #c8ffe7 100%);
+      color: #23243a;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #1587d1;
+      outline: none;
+    }
+
+    /* Sticky header with shadow */
+    header {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(90deg, #2f80ed 0%, #e4fffb 90%);
+      padding: 1.8em 0;
+      text-align: center;
+      box-shadow: 0 4px 40px rgba(47, 128, 237, 0.17);
+      z-index: 1000;
+      transition: background 0.4s ease;
+    }
+    header.scrolled {
+      background: linear-gradient(90deg, #1f5ec4 0%, #c8e7ff 90%);
+      box-shadow: 0 5px 32px rgba(21, 135, 209, 0.7);
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2.5em;
+      font-family: 'Barlow', cursive, sans-serif;
+    }
+    nav a {
+      font-weight: 800;
+      font-size: 1.1em;
+      padding: 0.8em 1.4em;
+      border-radius: 14px;
+      background: #c8ffe7;
+      box-shadow: 0 2px 12px #18f9e0aa;
+      transform-origin: center;
+      transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    }
+    nav a:hover,
+    nav a:focus {
+      background: #1587d1;
+      color: #fff;
+      box-shadow: 0 4px 24px #18f9e0ff;
+      transform: translateY(-3px) scale(1.07);
+      text-shadow: 0 0 8px #d0faff;
+    }
+
+    /* Hero section with video & overlay */
+    .hero-bg {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      background: #020a3a;
+      overflow: hidden;
+    }
+    .hero-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75);
+      transition: filter 1s;
+    }
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 1em;
+      color: #fff;
+      background: linear-gradient(0deg, rgba(2, 9, 38, 0.7), rgba(2, 9, 38, 0.3) 50%, rgba(2, 9, 38, 0.8));
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(25px);
+      animation: fadeInUp 2.5s forwards;
+    }
+    .hero-content h1 {
+      font-family: 'Pacifico', cursive, 'Barlow', sans-serif;
+      font-size: 4.1rem;
+      font-weight: 800;
+      background: linear-gradient(270deg, #18f9e0 10%, #fafaff 70%, #2f80ed 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      text-shadow: 0 8px 28px #1dd9ff99;
+      margin-bottom: 0.3em;
+      transition: letter-spacing 0.3s;
+      cursor: default;
+    }
+    .hero-content h1:hover {
+      letter-spacing: 8px;
+    }
+    .hero-content p {
+      font-size: 1.65em;
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.9em 2.6em;
+      border-radius: 24px;
+      box-shadow: 0 0 28px #18f9e0bb;
+      max-width: 720px;
+      cursor: default;
+    }
+
+    /* Section fade in animation */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Container wrap for content */
+    .container {
+      max-width: 1680px;
+      margin: 3.5em auto 5em;
+      padding: 0 1em;
+    }
+
+    /* Section titles */
+    h2.section-title {
+      font-family: 'Barlow', cursive, sans-serif;
+      font-weight: 800;
+      font-size: 2.8rem;
+      color: #2f80ed;
+      border-bottom: 4px solid #18f9e0;
+      padding-bottom: 0.25em;
+      max-width: fit-content;
+      margin-bottom: 1em;
+      user-select: none;
+      cursor: default;
+      text-shadow: 0 1px 8px #e4fffb;
+    }
+
+    /* About and Features Section */
+    .about-section {
+      font-size: 1.22em;
+      color: #020a3a;
+      line-height: 1.55;
+      user-select: text;
+      margin-bottom: 5em;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(90deg, #c8ffe7 0%, #fafdff 90%);
+      padding: 2em 2.5em;
+      border-radius: 28px;
+      box-shadow: 0 6px 42px #18f9e0aa;
+      transition: box-shadow 0.35s ease;
+    }
+    .about-section:hover {
+      box-shadow: 0 12px 55px #1587d1dd;
+    }
+    .about-section ul {
+      padding-left: 1.4em;
+      margin-top: 0.6em;
+    }
+    .about-section ul li {
+      margin-bottom: 0.65em;
+      line-height: 1.5;
+    }
+
+    /* Carousel styles */
+    .carousel-section {
+      background: #e3f7ff;
+      padding: 2.2em 0 3.4em;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 3em;
+      padding-left: 1.5em;
+    }
+    .carousel::-webkit-scrollbar {
+      height: 10px;
+      border-radius: 6px;
+    }
+    .carousel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .carousel::-webkit-scrollbar-thumb {
+      background-color: #18f9e0cc;
+      border-radius: 6px;
+    }
+    .carousel-card {
+      min-width: 340px;
+      max-width: 340px;
+      background: #fff8fc;
+      border-radius: 30px;
+      box-shadow: 0 6px 38px rgba(47, 128, 237, 0.15);
+      padding: 2.2em;
+      flex: 1 0 auto;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.45s cubic-bezier(0.43, 0.41, 0.61, 1.17),
+        box-shadow 0.5s ease;
+      outline-offset: 2px;
+      outline-color: transparent;
+    }
+    .carousel-card:hover,
+    .carousel-card:focus-visible {
+      transform: scale(1.11) rotate(-3deg);
+      box-shadow: 0 12px 64px #18f9e0dd;
+      outline-color: #18f9e0cc;
+    }
+    .carousel-card img {
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 1em;
+      object-fit: cover;
+      box-shadow: 0 2px 20px #18f9e0bb;
+      transition: box-shadow 0.3s ease;
+    }
+    .carousel-card h3 {
+      margin: 0 0 0.4em 0;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      color: #2f80ed;
+      text-shadow: 0 1px 8px #d6f1ff;
+    }
+    .carousel-card p {
+      font-size: 1em;
+      line-height: 1.4;
+      color: #23243acc;
+      user-select: text;
+    }
+
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.8em;
+      margin-bottom: 3em;
+      padding: 0 3%;
+      user-select: none;
+    }
+    .feature {
+      background: #f8fcff;
+      border-radius: 30px;
+      padding: 2.5em 1.3em;
+      box-shadow: 0 3px 30px #18f9e099;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+      font-family: 'Barlow', sans-serif;
+      text-align: center;
+      color: #020a3a;
+    }
+    .feature:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 48px #2f80edbb;
+    }
+    .feature img {
+      width: 80px;
+      margin-bottom: 0.8em;
+      filter: drop-shadow(0 0 5px #18f9e055);
+      transition: filter 0.3s ease;
+    }
+    .feature:hover img {
+      filter: drop-shadow(0 0 14px #18f9e0dd);
+    }
+    .feature h3 {
+      font-weight: 800;
+      margin-bottom: 0.5em;
+    }
+    .feature p {
+      font-weight: 600;
+      font-size: 1.05em;
+      line-height: 1.5;
+      user-select: text;
+    }
+
+    /* Courses section */
+    .courses-section {
+      padding: 4em 1em 5em;
+      background: linear-gradient(90deg, #e4fffb 0%, #f9fcfe 100%);
+      user-select: none;
+    }
+    .courses-section h2 {
+      text-align: center;
+      margin-bottom: 2em;
+      font-family: 'Barlow', cursive, sans-serif;
+      font-size: 2.9rem;
+      font-weight: 800;
+      color: #1587d1;
+      text-shadow: 0 1px 10px #8ecae7;
+      user-select: none;
+    }
+    .courses-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.4em;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .course {
+      background: #18f9e0;
+      padding: 1.6em 1.3em;
+      border-radius: 28px;
+      box-shadow: 0 10px 40px #0f6fb9cc;
+      color: #020a3a;
+      transition: box-shadow 0.32s ease, transform 0.3s ease;
+      cursor: default;
+      font-weight: 700;
+      font-size: 1.08em;
+      font-family: 'Barlow', cursive, sans-serif;
+      letter-spacing: 0.6px;
+      line-height: 1.5;
+      user-select: text;
+    }
+    .course:hover {
+      box-shadow: 0 12px 50px #0e5e95ff;
+      transform: scale(1.05);
+    }
+    .course h3 {
+      margin-top: 0;
+      margin-bottom: 0.65em;
+      font-family: 'Montserrat', sans-serif;
+      color: #02142d;
+      font-weight: 900;
+      text-shadow: 0 1px 10px #58c9f9;
+    }
+    .course ul {
+      margin-top: 0.8em;
+      list-style-type: disc;
+      padding-left: 1.4em;
+      font-weight: 600;
+      font-size: 0.98em;
+      line-height: 1.4;
+    }
+    .course ul li {
+      margin-bottom: 0.45em;
+      user-select: text;
+    }
+    
+    /* Detailed info section */
+    .info-section {
+      max-width: 890px;
+      margin: 3em auto 5em;
+      background: linear-gradient(110deg, #c8ffe7 15%, #e6fcff 95%);
+      border-radius: 28px;
+      padding: 2.5em 3em;
+      box-shadow: 0 8px 36px #18f9e033;
+      font-family: 'Barlow', cursive, sans-serif;
+      color: #155570;
+      border: 1px solid #18f9e055;
+      user-select: text;
+    }
+    .info-section h3 {
+      font-weight: 900;
+      font-size: 2.1em;
+      margin-bottom: 0.7em;
+      color: #2f80ed;
+      text-shadow: 0 0 6px #81dfffcc;
+    }
+    .info-section p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 1.2em;
+    }
+    .info-section a {
+      text-decoration: underline;
+    }
+
+    /* FAQ section */
+    .faq-section {
+      max-width: 820px;
+      margin: 5em auto 6em;
+      padding: 2.2em 3em;
+      background: #eefbff;
+      border-radius: 28px;
+      box-shadow: 0 7px 30px #1587d166;
+      font-family: 'Montserrat', sans-serif;
+      user-select: none;
+    }
+    .faq-section h2 {
+      font-size: 2.75rem;
+      font-weight: 900;
+      margin-bottom: 1.2em;
+      color: #1587d1;
+      text-align: center;
+      font-family: 'Barlow', cursive, sans-serif;
+      user-select: none;
+      text-shadow: 0 1px 6px #abe3ff;
+    }
+    details {
+      margin-bottom: 1.2em;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px #2f80ed55;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    details[open] {
+      box-shadow: 0 4px 28px #2f80edbb;
+    }
+    summary {
+      font-weight: 700;
+      font-size: 1.15em;
+      padding: 1em 1.3em;
+      background: linear-gradient(90deg, #d1f0ff 15%, #b0e1ff 90%);
+      border-radius: 10px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] summary {
+      background: linear-gradient(90deg, #7fc8ff 15%, #3f9dff 90%);
+      color: #fff;
+    }
+    details p {
+      padding: 0.7em 1.6em 1.2em 1.6em;
+      font-size: 1em;
+      line-height: 1.5;
+      color: #0d2a4e;
+    }
+
+    /* Newsletter Subscription */
+    .newsletter {
+      max-width: 480px;
+      background: #e6fcff;
+      padding: 2.8em 2.2em;
+      margin: 0 auto 5em;
+      border-radius: 28px;
+      box-shadow: 0 10px 48px #18f9e0bb;
+      font-family: 'Barlow', cursive, sans-serif;
+      text-align: center;
+      user-select: none;
+    }
+    .newsletter h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin-bottom: 0.8em;
+      color: #0a3a5a;
+      text-shadow: 0 1px 6px #a7e2ffaa;
+      user-select: none;
+    }
+    .newsletter input[type="email"] {
+      width: 60%;
+      padding: 0.9em 1em;
+      border: 2px solid #18f9e0;
+      border-radius: 18px 0 0 18px;
+      font-size: 1.1em;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.3s ease;
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: text;
+    }
+    .newsletter input[type="email"]:focus {
+      border-color: #0d74c9;
+      box-shadow: 0 0 14px #18f9e0bb;
+    }
+    .newsletter button {
+      width: 35%;
+      padding: 0.95em;
+      font-size: 1.15em;
+      font-weight: 900;
+      background: #18f9e0;
+      border: none;
+      color: #020a3a;
+      border-radius: 0 18px 18px 0;
+      cursor: pointer;
+      box-shadow: 0 6px 28px #0f6fb9cc;
+      transition: background 0.25s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .newsletter button:hover,
+    .newsletter button:focus {
+      background: #2f80ed;
+      color: #fff;
+      box-shadow: 0 10px 38px #3998ffdd;
+      outline: none;
+    }
+    .newsletter small {
+      display: block;
+      margin-top: 0.7em;
+      color: #1587d1;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    /* Team section */
+    .team-section {
+      padding: 3em 1em 5em;
+      background: #fafaff;
+      user-select: none;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .team-section h2 {
+      text-align: center;
+      margin-bottom: 2.2em;
+      font-family: 'Barlow', cursive, sans-serif;
+      font-size: 2.85rem;
+      font-weight: 800;
+      color: #2f80ed;
+      text-shadow: 0 1px 10px #b8dbfc;
+    }
+    .team {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.8em;
+    }
+    .person {
+      background: #e3f7ff;
+      padding: 1.4em;
+      border-radius: 20px;
+      max-width: 260px;
+      text-align: center;
+      cursor: default;
+      box-shadow: 0 5px 22px #18f9e0aa;
+      font-family: 'Pacifico', cursive;
+      transition: box-shadow 0.4s ease, transform 0.3s ease;
+    }
+    .person:hover {
+      box-shadow: 0 10px 50px #2f80eddd;
+      transform: scale(1.12) rotate(-1deg);
+    }
+    .person img {
+      width: 95px;
+      border-radius: 50%;
+      box-shadow: 0 2px 16px #18f9e0cc;
+      margin-bottom: 0.8em;
+      transition: box-shadow 0.4s ease;
+    }
+    .person h4 {
+      margin: 0 0 0.3em 0;
+      font-size: 1.36em;
+      font-weight: 900;
+      color: #0b1f44;
+      text-shadow: 0 0 14px #8cd7fb;
+    }
+    .person p {
+      font-size: 1.02em;
+      font-weight: 600;
+      color: #12325a;
+      line-height: 1.3;
+    }
+
+    /* Testimonials */
+    #testimonials {
+      max-width: 860px;
+      margin: 0 auto 6em;
+      user-select: none;
+    }
+    #testimonials h2 {
+      text-align: center;
+      margin-bottom: 2em;
+      font-family: 'Barlow', cursive, sans-serif;
+      font-size: 2.8rem;
+      color: #18f9e0;
+      text-shadow: 0 1px 8px #69d0f1;
+    }
+    .testimonial {
+      background: #e4fffb;
+      padding: 2em 2.4em;
+      border-left: 9px solid #18f9e0;
+      border-radius: 28px;
+      margin-bottom: 1.8em;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.27em;
+      font-weight: 500;
+      color: #165c72;
+      box-shadow: 0 10px 32px #89ebf6aa;
+      cursor: default;
+      transition: background 0.35s ease;
+    }
+    .testimonial:hover {
+      background: #d0f5ff;
+    }
+    .testimonial strong {
+      font-weight: 900;
+      color: #1587d1;
+      text-shadow: 0 0 10px #99e8ff;
+    }
+
+    /* Contact Section */
+    #contact {
+      padding: 5em 1em;
+      max-width: 480px;
+      margin: 0 auto 6em;
+      user-select: none;
+    }
+    #contact h2 {
+      font-family: 'Barlow', cursive, sans-serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #2f80ed;
+      margin-bottom: 1em;
+      text-align: center;
+      text-shadow: 0 0 12px #74b9ff;
+      user-select: none;
+    }
+    form {
+      background: #fafdff;
+      padding: 2.8em 2.2em;
+      border-radius: 28px;
+      box-shadow: 0 8px 36px #18f9e0aa;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.45em;
+      font-size: 1.04em;
+      color: #0a2540;
+      user-select: text;
+    }
+    input,
+    textarea {
+      width: 100%;
+      padding: 1em 1.1em;
+      margin-bottom: 1.3em;
+      border: 2px solid #b9deed;
+      border-radius: 15px;
+      font-size: 1.1em;
+      transition: border-color 0.3s ease;
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: text;
+    }
+    input:focus,
+    textarea:focus {
+      border-color: #2f80ed;
+      outline: none;
+      box-shadow: 0 0 15px #74b9ffcc;
+    }
+    button {
+      width: 100%;
+      padding: 1.2em;
+      font-size: 1.25em;
+      font-weight: 900;
+      background: linear-gradient(90deg, #1587d1 10%, #8ecae6 90%);
+      border: none;
+      color: white;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 28px #0e5e95cc;
+      transition: background 0.25s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background: linear-gradient(90deg, #2f80ed 10%, #38afff 90%);
+      box-shadow: 0 10px 38px #3998ffdd;
+      outline: none;
+    }
+
+    /* Chatbox */
+    .chatbox {
+      position: fixed;
+      right: 2em;
+      bottom: 2em;
+      width: 360px;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 4px 36px #18f9e0de;
+      padding: 1.5em 1.5em 1em;
+      font-family: 'Barlow', sans-serif;
+      user-select: none;
+      animation: bouncein 1.5s cubic-bezier(0.43, 0.41, 0.61, 1.17);
+      z-index: 10001;
+      transition: all 0.3s ease;
+    }
+    @keyframes bouncein {
+      0% { transform: scale(0.8); }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .chatbox h4 {
+      margin: 0 0 0.8em 0;
+      cursor: default;
+      font-weight: 600;
+      color: #1b319a;
+      letter-spacing: 0.8px;
+      user-select: none;
+      text-shadow: 0 0 8px #74b9ffbb;
+    }
+    .chatbox input,
+    .chatbox textarea {
+      width: 100%;
+      padding: 0.7em;
+      margin: 0.4em 0;
+      border-radius: 12px;
+      border: 2px solid #b9deed;
+      font-size: 1.05em;
+      font-family: 'Montserrat', Arial, sans-serif;
+      transition: border-color 0.3s ease;
+      resize: none;
+      user-select: text;
+    }
+    .chatbox input:focus,
+    .chatbox textarea:focus {
+      border-color: #2f80ed;
+      box-shadow: 0 0 18px #74b9ffcc;
+      outline: none;
+    }
+    .chatbox button {
+      background: #18f9e0;
+      color: #020a3a;
+      border: none;
+      border-radius: 14px;
+      padding: 0.9em 2em;
+      font-weight: 900;
+      font-size: 1.15em;
+      margin-top: 0.6em;
+      cursor: pointer;
+      box-shadow: 0 6px 28px #0f6fb9cc;
+      transition: background 0.25s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .chatbox button:hover {
+      background: #2f80ed;
+      color: #fff;
+      box-shadow: 0 10px 38px #3998ffdd;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 6em;
+      background: linear-gradient(270deg, #020a3a 10%, #2f80ed 90%);
+      color: #c8ffe7;
+      text-align: center;
+      font-size: 1.15em;
+      padding: 3em 2em;
+      font-family: 'Pacifico', cursive;
+      transition: background 0.7s;
+      user-select: none;
+      letter-spacing: 1px;
+    }
+    footer a {
+      color: #18f9e0;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    footer a:hover {
+      color: #a5dfff;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-content h1 {
+        font-size: 3.2rem;
+        letter-spacing: 1.5px;
+      }
+      .hero-content p {
+        font-size: 1.2rem;
+        padding: 0.7em 1.5em;
+      }
+    }
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        gap: 1.6em;
+      }
+      nav a {
+        font-size: 1.05em;
+        padding: 0.7em 1em;
+      }
+      .carousel {
+        flex-direction: column;
+        gap: 1.8em;
+      }
+      .carousel-card {
+        min-width: 90%;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .features-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .courses-list {
+        grid-template-columns: 1fr !important;
+      }
+      .team {
+        flex-direction: column !important;
+      }
+      #contact {
+        max-width: 95vw;
+        padding: 3em 1.5em;
+      }
+      .chatbox {
+        right: 0.6em;
+        bottom: 0.6em;
+        width: 90vw;
+        border-radius: 20px;
+      }
+      .newsletter input[type="email"],
+      .newsletter button {
+        width: 100% !important;
+        border-radius: 16px !important;
+        margin: 0.5em 0 0 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner" aria-label="Main site navigation">
+    <nav role="navigation" aria-label="Primary menu">
+      <a href="#about" tabindex="1">About</a>
+      <a href="#carousel" tabindex="2">Success Gallery</a>
+      <a href="#courses" tabindex="3">Courses</a>
+      <a href="#features" tabindex="4">Features</a>
+      <a href="#team" tabindex="5">Team</a>
+      <a href="#testimonials" tabindex="6">Testimonials</a>
+      <a href="#faq" tabindex="7">FAQ</a>
+      <a href="#newsletter" tabindex="8">Newsletter</a>
+      <a href="#contact" tabindex="9">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero-bg" aria-label="Hero section with video background and main site title">
+    <video src="https://assets.mixkit.co/videos/preview/mixkit-programmer-working-on-computer-4010-large.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+    <div class="hero-content">
+      <h1>Visionary Web Academy 2025</h1>
+      <p>Empowering creators with interactive, animated, and visually expressive learning—experience transitions, stunning fonts, and rich knowledge that grabs attention and keeps it!</p>
+    </div>
+  </section>
+
+  <section class="about-section container" id="about" tabindex="0" aria-label="About Visionary Web Academy">
+    <h2 class="section-title">Welcome to Tomorrow's Web</h2>
+    <p>Unlock a dynamic learning journey with pixel-perfect design, CSS animations, animated sections, bold color gradients, interactive lessons, and visual storytelling. Discover next generation coding, AI, UX/UI, creative expression, and more. <b>Key topics:</b> CSS transitions, page transitions, animation, responsive design, micro-interactions, accessibility, best practices.</p>
+    <ul>
+      <li>Modern CSS transitions (hover, scaling, fading)</li>
+      <li>Advanced Google Fonts for expressiveness</li>
+      <li>Parallax, scroll and video effects</li>
+      <li>AI integrations and animated bots</li>
+      <li>Weekly workshops & live support</li>
+    </ul>
+  </section>
+
+  <section class="carousel-section" id="carousel" aria-label="Success projects gallery">
+    <div class="container">
+      <h2 class="section-title">Success Gallery</h2>
+      <div class="carousel" tabindex="0" aria-roledescription="carousel" aria-live="polite" aria-atomic="true">
+        <article class="carousel-card" tabindex="0" aria-label="AI App project success">
+          <img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=800&q=80" alt="AI App Launch" />
+          <h3>AI App Launch</h3>
+          <p>Students designed and deployed a trending AI web app used worldwide, featuring animated page transitions and micro-interactions.</p>
+        </article>
+        <article class="carousel-card" tabindex="0" aria-label="UI Revolution project success">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" alt="UI Revolution" />
+          <h3>UI Revolution</h3>
+          <p>Alumni deliver bold, animated interfaces with oversize fonts, glitch effects, and “bento grid” layouts for global startups.</p>
+        </article>
+        <article class="carousel-card" tabindex="0" aria-label="Responsive Commerce project success">
+          <img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=800&q=80" alt="Responsive Commerce" />
+          <h3>Responsive Commerce</h3>
+          <p>Websites built by learners feature scrolling transitions, parallax, and expressive product visuals.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-grid container" id="features" aria-label="Features of Visionary Web Academy">
+    <div class="feature" tabindex="0">
+      <img src="https://img.icons8.com/fluency/96/confetti.png" alt="Confetti icon" />
+      <h3>CSS Transitions & Animations</h3>
+      <p>Smooth hover, fade, and movement effects enhance user engagement and provide a professional look—see the effects on every card, button, and section.</p>
+    </div>
+    <div class="feature" tabindex="0">
+      <img src="https://img.icons8.com/fluency/96/paint-palette.png" alt="Paint palette icon" />
+      <h3>Expressive Fonts & Color</h3>
+      <p>Eye-popping Google Fonts like 'Pacifico', gradient backgrounds, and custom icons make every section memorable.</p>
+    </div>
+    <div class="feature" tabindex="0">
+      <img src="https://img.icons8.com/fluency/96/bot.png" alt="Bot icon" />
+      <h3>Animated Chatbot & Micro Interactions</h3>
+      <p>Instant support, animated inputs, interactive feedback—every section offers a modern, animated experience.</p>
+    </div>
+    <div class="feature" tabindex="0">
+      <img src="https://img.icons8.com/fluency/96/futurama-bender.png" alt="Robot icon" />
+      <h3>Useful Knowledge & Events</h3>
+      <p>Includes demos, live Q&A, project resource links, and event announcements for every learner, all visually highlighted.</p>
+    </div>
+  </section>
+
+  <section class="courses-section" id="courses" aria-label="Courses offered by Visionary Web Academy">
+    <h2>Courses</h2>
+    <div class="courses-list">
+      <article class="course" tabindex="0" aria-label="Frontend Experience course">
+        <h3>Frontend Experience</h3>
+        <ul>
+          <li>HTML5, CSS3 with advanced grid and flexbox for layouts</li>
+          <li>Responsive design with media queries and mobile-first strategy</li>
+          <li>JavaScript fundamentals, ES6+ features, and DOM manipulation</li>
+          <li>React.js, Redux for state management, and hooks concepts</li>
+          <li>Figma UI prototyping and basic design principles</li>
+          <li>Accessibility (a11y) standards and best coding practices</li>
+        </ul>
+      </article>
+      <article class="course" tabindex="0" aria-label="Creative AI and Automation course">
+        <h3>Creative AI & Automation</h3>
+        <ul>
+          <li>Introduction to generative AI and creative coding</li>
+          <li>AI-based image and layout generation tools</li>
+          <li>Automating design workflows with scriptable tools</li>
+          <li>3D web graphics using libraries like Three.js</li>
+          <li>Natural Language Processing basics for content automation</li>
+        </ul>
+      </article>
+      <article class="course" tabindex="0" aria-label="Interactive Backend course">
+        <h3>Interactive Backend</h3>
+        <ul>
+          <li>Node.js, Express framework, and REST API design</li>
+          <li>Database management with MongoDB and SQL</li>
+          <li>Authentication & security best practices</li>
+          <li>Serverless functions and Jamstack deployment models</li>
+          <li>Building chatbots and websocket live communication</li>
+          <li>Containerization and cloud deployment basics</li>
+        </ul>
+      </article>
+      <article class="course" tabindex="0" aria-label="UX and UI Mastery course">
+        <h3>UX/UI Mastery</h3>
+        <ul>
+          <li>User-centered design principles and research</li>
+          <li>Prototyping tools and usability testing</li>
+          <li>Micro-interactions and animation in UI</li>
+          <li>Color theory, typography, and layout composition</li>
+          <li>Designing for accessibility and inclusive experiences</li>
+          <li>UI pattern libraries and component-driven design</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="info-section" aria-label="Detailed information about learning outcomes and tech stacks">
+    <h3>Learning Outcomes & Tech Stack</h3>
+    <p>Our academy ensures students gain practical, job-ready skills by working on real-world projects, collaborating cross-functionally, and mastering technologies like:</p>
+    <ul>
+      <li>Frontend: HTML5, CSS3, JavaScript/TypeScript, React, Vue.js</li>
+      <li>Backend: Node.js, Express, Python Flask & Django, MongoDB, MySQL</li>
+      <li>DevOps & Deployment: Docker, AWS, Netlify, Vercel, GitHub Actions</li>
+      <li>AI Tools: TensorFlow, OpenAI APIs, Generative Design Tools</li>
+      <li>UI/UX: Figma, Adobe XD, Principle, Storybook</li>
+      <li>Soft Skills: Agile methodologies, teamwork, project management</li>
+    </ul>
+    <p>Graduates are equipped to start careers as Frontend Developers, Fullstack Engineers, UX Designers, AI-enabled Creative Coders, and more.</p>
+  </section>
+
+  <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>What is the course duration?</summary>
+      <p>Our structured programs vary: Frontend and Backend foundational courses last about 12 weeks each; specialized AI and UX/UI courses last between 6-8 weeks.</p>
+    </details>
+    <details>
+      <summary>Are there live sessions or is it self-paced?</summary>
+      <p>We offer a hybrid model
